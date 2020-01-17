@@ -24,7 +24,7 @@ module OTTER_Processor(
     input CLK,
     // Temp data connections
     input PC_RST, PC_WRITE,
-    input [1:0]PC_SEL,
+    input [1:0]PC_SOURCE,
     input [31:0] JALR, BRANCH, JAL,
     // End Temp
     output [31:0] INSTRUCTION
@@ -35,7 +35,7 @@ module OTTER_Processor(
     
     ProgRom prog_rom(.CLK(CLK), .ADDR(PC_COUNTER), .INSTRUCTION(INSTRUCTION));
     
-    Mux4 pc_mux(.SEL(PC_SEL), 
+    Mux4 pc_mux(.SEL(PC_SOURCE), 
                 .ZERO(PC_COUNTER + 4), 
                 .ONE(JALR), 
                 .TWO(BRANCH), 
