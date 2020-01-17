@@ -7,9 +7,9 @@ module PC(
 
 always_ff @ (posedge CLK) begin
     if (!PC_RST)
-        PC_COUNT = 0;
+        PC_COUNT <= 0;
     else if (PC_WRITE)
-        PC_COUNT = PC_DIN;
+        PC_COUNT <= PC_DIN;
 end
 
 endmodule

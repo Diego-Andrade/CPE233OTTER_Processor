@@ -38,7 +38,7 @@ end
 
 always_ff @ (posedge CLK) begin
     if (RF_EN)
-        ram[RF_WA] = RF_WD;
+        ram[RF_WA] <= RF_WD;
 end
 
 // Always continous data
