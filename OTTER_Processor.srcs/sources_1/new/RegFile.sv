@@ -28,7 +28,7 @@ module RegFile(
     output logic [31:0] RF_RS1, RF_RS2 
 );
 
-logic [31:0] ram [31:0];
+logic [31:0] ram [0:31];
 
 initial begin
     for (int i = 0; i < 32; i++) begin
@@ -42,7 +42,11 @@ always_ff @ (posedge CLK) begin
 end
 
 // Always continous data
-assign RF_RS1 = ram[RF_ADDR1];
-assign RF_RS2 = ram[RF_ADDR2];
+always_comb begin
+    if (~ (RF_ADDR1 == 0))
+        RF_RS1 = ram[RF_ADDR1];
+    if (~ (RF_ADDR2 == 0))
+        RF_RS2 = ram[RF_ADDR2];
+end
 
 endmodule
