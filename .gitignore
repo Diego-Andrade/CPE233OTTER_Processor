@@ -1,2 +1,4 @@
-OTTER_Processor.cache/wt/project.wpc
-*.wdf
+OTTER_Processor.cache/*
+OTTER_Processor.ip_user_files/*
+OTTER_Processor.runs/*
+OTTER_Processor.sim/*
