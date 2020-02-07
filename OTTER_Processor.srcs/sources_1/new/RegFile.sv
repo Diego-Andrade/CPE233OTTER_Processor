@@ -22,31 +22,27 @@
 
 module RegFile(
     input CLK,
-    input [31:0] RF_ADDR1, RF_ADDR2,
-    input [31:0] RF_WA, RF_WD,
+    input [4:0] RF_ADDR1, RF_ADDR2, RF_WA,
+    input [31:0] RF_WD,
     input RF_EN,
     output logic [31:0] RF_RS1, RF_RS2 
 );
 
-logic [31:0] ram [0:31];
+logic [31:0] registers [0:31];
 
 initial begin
     for (int i = 0; i < 32; i++) begin
-        ram[i] = 0;
+        registers[i] = 0;
     end
 end
 
 always_ff @ (posedge CLK) begin
-    if (RF_EN)
-        ram[RF_WA] <= RF_WD;
+    if (RF_EN && RF_WA !== 0)
+        registers[RF_WA] <= RF_WD;
 end
 
 // Always continous data
-always_comb begin
-    if (~ (RF_ADDR1 == 0))
-        RF_RS1 = ram[RF_ADDR1];
-    if (~ (RF_ADDR2 == 0))
-        RF_RS2 = ram[RF_ADDR2];
-end
+assign RF_RS1 = registers[RF_ADDR1];
+assign RF_RS2 = registers[RF_ADDR2];
 
 endmodule
