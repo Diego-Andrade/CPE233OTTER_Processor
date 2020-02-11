@@ -29,6 +29,19 @@ module BRANCH_COND_GEN_sim();
             .br_eq(br_eq), .br_lt(br_lt), .br_ltu(br_ltu));
             
     initial begin
-        rs1 = 32'h4
+        rs1 = 32'h3;
+        rs2 = 32'h4; #5;
+        
+        rs1 = 32'hA;
+        rs2 = 32'hA; #5;
+        
+        rs1 = 32'h6;
+        rs2 = 32'h2; #5;
+        
+        rs1 = 32'hFFFFFFF1;
+        rs2 = 32'h8; #5;
+                
+        rs1 = 32'h4;
+        rs2 = 32'hFFFFFFF4; #5;
     end
 endmodule

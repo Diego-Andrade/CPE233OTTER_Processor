@@ -27,6 +27,6 @@ module BRANCH_COND_GEN(
     
     
     assign br_eq = (rs1 == rs2);
-    assign br_lt = (rs1 < rs2);
-    assign br_ltu = ($signed(rs1) < $signed(rs2));
+    assign br_lt = ($signed(rs1) < $signed(rs2));
+    assign br_ltu = (rs1 < rs2);
 endmodule

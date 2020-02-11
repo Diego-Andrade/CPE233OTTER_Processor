@@ -22,5 +22,25 @@
 
 module BRANCH_ADDR_GEN_sim();
 
-    BRANCH_ADDR_GEN br_addr_gen();
+    logic [31:0] PC, B, I, J, rs1, jal, branch, jalr;
+    
+    BRANCH_ADDR_GEN br_addr_gen(
+        .PC(PC),
+        .B(B), .I(I), .J(J),
+        .rs1(rs1),
+        .jal(jal), .branch(branch), .jalr(jalr));
+        
+        initial begin
+            PC = 32'h10;
+            
+            // For branch
+            B = -12;
+            
+            // For jal
+            J = 8;
+            
+            // Simulating jalr
+            rs1 = 32'hC;
+            I = 4;
+        end
 endmodule
