@@ -21,12 +21,12 @@
 
 
 module BRANCH_COND_GEN(
-    input [31:0] rs1, rs2,
-    output br_eq, br_lt, br_ltu
+    input [31:0] RS1, RS2,
+    output BR_EQ, BR_LT, BR_LTU
     );
     
     
-    assign br_eq = (rs1 == rs2);
-    assign br_lt = ($signed(rs1) < $signed(rs2));
-    assign br_ltu = (rs1 < rs2);
+    assign BR_EQ = (RS1 == RS2);
+    assign BR_LT = ($signed(RS1) < $signed(RS2));
+    assign BR_LTU = (RS1 < RS2);
 endmodule

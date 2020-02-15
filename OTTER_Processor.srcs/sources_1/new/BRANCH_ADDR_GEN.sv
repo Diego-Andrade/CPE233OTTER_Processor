@@ -22,11 +22,11 @@
 module BRANCH_ADDR_GEN(
     input [31:0] PC,
     input [31:0] B, I, J,
-    input [31:0] rs1,
-    output [31:0] jal, branch, jalr
+    input [31:0] RS1,
+    output [31:0] JAL, BRANCH, JALR
 );
     
-    assign jal = PC + J;
-    assign branch = PC + B;
-    assign jalr = rs1 + I;
+    assign JAL = PC + J;
+    assign BRANCH = PC + B;
+    assign JALR = RS1 + I;
 endmodule
