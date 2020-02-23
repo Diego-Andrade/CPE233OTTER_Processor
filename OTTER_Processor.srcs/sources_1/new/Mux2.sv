@@ -22,7 +22,7 @@
 
 module Mux2(
     input logic [31:0] ZERO, ONE,
-    input logic [1:0] SEL,
+    input logic SEL,
     output logic [31:0] OUT 
 );
     

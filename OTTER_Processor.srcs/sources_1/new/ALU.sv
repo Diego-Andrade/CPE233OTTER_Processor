@@ -48,7 +48,7 @@ module ALU(
                     RESULT = 0;
             4'b1001: RESULT = A;                                    // LUI - copy
             default:                                                // Default of nothing 
-                ;
+                RESULT = 0;
         endcase
     end
 endmodule
