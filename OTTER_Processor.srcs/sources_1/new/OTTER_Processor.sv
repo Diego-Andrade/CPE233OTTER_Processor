@@ -83,7 +83,7 @@ module OTTER_Processor(
     
     Mux4 reg_mux(
         .SEL(tRF_WR_SEL),
-        .ZERO(tPC),
+        .ZERO(tPC+4),
         .ONE(tCSR_REG),
         .TWO(tMEM_DOUT2),
         .THREE(tALU_RESULT),

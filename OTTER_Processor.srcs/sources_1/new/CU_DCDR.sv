@@ -82,8 +82,8 @@ module CU_DCDR(
                     3'b001: if (~BR_EQ) PC_SOURCE = 2;              // BNE
                     3'b101: if (BR_EQ || ~BR_LT) PC_SOURCE = 2;     // BGE
                     3'b111: if (BR_EQ || ~BR_LTU) PC_SOURCE = 2;    // BGEU
-                    3'b100: if (~BR_EQ || BR_LT) PC_SOURCE = 2;     // BLT
-                    3'b110: if (~BR_EQ || BR_LT) PC_SOURCE = 2;     // BLTU
+                    3'b100: if (BR_LT) PC_SOURCE = 2;               // BLT
+                    3'b110: if (BR_LTU) PC_SOURCE = 2;              // BLTU
                 endcase
             end
             
