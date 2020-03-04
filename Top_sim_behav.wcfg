@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="Top_sim_behav.wdb" id="1">
+      <db_ref path="C:/Users/Diego/Documents/Calpoly/2020_Winter/CPE233/OTTER_Processor/OTTER_Processor.sim/sim_1/behav/xsim/Top_sim_behav.wdb" id="1">
          <top_modules>
             <top_module name="Top_sim" />
             <top_module name="glbl" />
@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="13090833333fs"></ZoomStartTime>
-      <ZoomEndTime time="13122233334fs"></ZoomEndTime>
-      <Cursor1Time time="13117000000fs"></Cursor1Time>
+      <ZoomStartTime time="13111500000fs"></ZoomStartTime>
+      <ZoomEndTime time="13125750001fs"></ZoomEndTime>
+      <Cursor1Time time="13116950000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="164"></NameColumnWidth>
-      <ValueColumnWidth column_width="95"></ValueColumnWidth>
+      <ValueColumnWidth column_width="91"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="27" />
+   <WVObjectSize size="46" />
    <wvobject fp_name="/Top_sim/CLK" type="logic">
       <obj_property name="ElementShortName">CLK</obj_property>
       <obj_property name="ObjectShortName">CLK</obj_property>
@@ -51,6 +51,12 @@
    <wvobject fp_name="/Top_sim/wp/MCU/branch_addr_gen/PC" type="array">
       <obj_property name="ElementShortName">PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_DOUT1" type="array">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">MEM_DOUT1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_DOUT1[31:0]</obj_property>
+      <obj_property name="label">INSTRUCTION</obj_property>
    </wvobject>
    <wvobject fp_name="/Top_sim/wp/MCU/cu_fsm/PS" type="array">
       <obj_property name="ElementShortName">PS[31:0]</obj_property>
@@ -142,5 +148,77 @@
    <wvobject fp_name="/Top_sim/wp/MCU/alu/RESULT" type="array">
       <obj_property name="ElementShortName">RESULT[31:0]</obj_property>
       <obj_property name="ObjectShortName">RESULT[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_CLK" type="logic">
+      <obj_property name="ElementShortName">MEM_CLK</obj_property>
+      <obj_property name="ObjectShortName">MEM_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_RDEN1" type="logic">
+      <obj_property name="ElementShortName">MEM_RDEN1</obj_property>
+      <obj_property name="ObjectShortName">MEM_RDEN1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_RDEN2" type="logic">
+      <obj_property name="ElementShortName">MEM_RDEN2</obj_property>
+      <obj_property name="ObjectShortName">MEM_RDEN2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_WE2" type="logic">
+      <obj_property name="ElementShortName">MEM_WE2</obj_property>
+      <obj_property name="ObjectShortName">MEM_WE2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_ADDR1" type="array">
+      <obj_property name="ElementShortName">MEM_ADDR1[13:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_ADDR1[13:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_ADDR2" type="array">
+      <obj_property name="ElementShortName">MEM_ADDR2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_ADDR2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_WD" type="array">
+      <obj_property name="ElementShortName">MEM_WD[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_WD[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_SIZE" type="array">
+      <obj_property name="ElementShortName">MEM_SIZE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_SIZE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_SIGN" type="logic">
+      <obj_property name="ElementShortName">MEM_SIGN</obj_property>
+      <obj_property name="ObjectShortName">MEM_SIGN</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/IO_IN" type="array">
+      <obj_property name="ElementShortName">IO_IN[31:0]</obj_property>
+      <obj_property name="ObjectShortName">IO_IN[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/IO_WR" type="logic">
+      <obj_property name="ElementShortName">IO_WR</obj_property>
+      <obj_property name="ObjectShortName">IO_WR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/MEM_DOUT2" type="array">
+      <obj_property name="ElementShortName">MEM_DOUT2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_DOUT2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/wordAddr2" type="array">
+      <obj_property name="ElementShortName">wordAddr2[13:0]</obj_property>
+      <obj_property name="ObjectShortName">wordAddr2[13:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/memReadWord" type="array">
+      <obj_property name="ElementShortName">memReadWord[31:0]</obj_property>
+      <obj_property name="ObjectShortName">memReadWord[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/ioBuffer" type="array">
+      <obj_property name="ElementShortName">ioBuffer[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ioBuffer[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/memReadSized" type="array">
+      <obj_property name="ElementShortName">memReadSized[31:0]</obj_property>
+      <obj_property name="ObjectShortName">memReadSized[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/byteOffset" type="array">
+      <obj_property name="ElementShortName">byteOffset[1:0]</obj_property>
+      <obj_property name="ObjectShortName">byteOffset[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Top_sim/wp/MCU/mem/weAddrValid" type="logic">
+      <obj_property name="ElementShortName">weAddrValid</obj_property>
+      <obj_property name="ObjectShortName">weAddrValid</obj_property>
    </wvobject>
 </wave_config>

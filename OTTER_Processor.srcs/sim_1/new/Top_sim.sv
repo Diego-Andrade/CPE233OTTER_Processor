@@ -29,6 +29,7 @@ module Top_sim();
     logic [15:0] LEDS;
     logic [7:0] CATHODES;
     logic [3:0] ANODES;
+    logic LEDSTRIP;
     
     OTTER_Wrapper wp(
             .CLK(CLK), 
@@ -36,7 +37,9 @@ module Top_sim();
             .SWITCHES(SWITCHES),
             .LEDS(LEDS),
             .CATHODES(CATHODES),
-            .ANODES(ANODES));
+            .ANODES(ANODES),
+            .LEDSTRIP(LEDSTRIP));
+            
     always begin
         CLK = 0; #1;
         CLK = 1; #1;
@@ -44,8 +47,9 @@ module Top_sim();
     
     initial begin
         SWITCHES = 0;
-        BTNC = 1; #50;
-        BTNC = 0; #5;
+        BTNC = 0;
+//        BTNC = 1; #50;
+//        BTNC = 0; #5;
     
     end
 endmodule

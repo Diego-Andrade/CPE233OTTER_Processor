@@ -15,12 +15,13 @@
 
 module OTTER_Wrapper(
    input CLK,
-   //input BTNL,
-   input BTNC,
+   input RST,
+   input INTR,
    input [15:0] SWITCHES,
    output logic [15:0] LEDS,
    output [7:0] CATHODES,
-   output [3:0] ANODES
+   output [3:0] ANODES,
+   output logic LEDSTRIP
    );
        
     // INPUT PORT IDS ///////////////////////////////////////////////////////
@@ -34,38 +35,62 @@ module OTTER_Wrapper(
     localparam LEDS_AD    = 32'h11080000;
     localparam SSEG_AD    = 32'h110C0000;
     
-   // Signals for connecting OTTER_MCU to OTTER_wrapper /////////////////////
-   logic s_reset,s_load;
-   logic sclk = 0;
+//    localparam WA    = 32'h11010000;
+//    localparam WD    = 32'h11020000;
+//    localparam WE    = 32'h11030000;
+            
     
+   // Signals for connecting OTTER_MCU to OTTER_wrapper /////////////////////
+   logic s_reset, s_load, s_intr;
+   logic s_clk = 0;
+   
+   // Peripheral data signals //////////////////////////////////////////////  
    logic [15:0]  r_SSEG;
      
    logic [31:0] IOBUS_out,IOBUS_in,IOBUS_addr;
    logic IOBUS_wr;
     
+//   logic [12:0] tempWA;
+//   logic [7:0] tempWD;
+//   logic tempWE;
+    
    // Declare OTTER_CPU ////////////////////////////////////////////////////
-   OTTER_Processor MCU (
-                    .RST(s_reset),  
-                    .INTR(1'b0), 
-                    .CLK(sclk),
-                    .IOBUS_OUT(IOBUS_out),
-                    .IOBUS_IN(IOBUS_in),
-                    .IOBUS_ADDR(IOBUS_addr),
-                    .IOBUS_WR(IOBUS_wr));
+    OTTER_Processor MCU (
+        .RST(s_reset),  
+        .INTR(s_intr), 
+        .CLK(s_clk),
+        .IOBUS_OUT(IOBUS_out),
+        .IOBUS_IN(IOBUS_in),
+        .IOBUS_ADDR(IOBUS_addr),
+        .IOBUS_WR(IOBUS_wr));
 
-   // Declare Seven Segment Display /////////////////////////////////////////
-   SevSegDisp SSG_DISP (.DATA_IN(r_SSEG), .CLK(CLK), .MODE(1'b0),
-                       .CATHODES(CATHODES), .ANODES(ANODES));
+    // Connect peripherals /////////////////////////////////////////////////
+
+    SevSegDisp SSG_DISP(.DATA_IN(r_SSEG), .CLK(CLK), .MODE(1'b0),
+        .CATHODES(CATHODES), .ANODES(ANODES));
    
+    debounce_one_shot interupt(
+        .CLK(s_clk),
+        .BTN(INTR),
+        .DB_BTN(s_intr));
+   
+    WS2813_Driver leds(.CLK(CLK), 
+        .Din({
+            SWITCHES[15:11], 3'b000, 
+            SWITCHES[10:5], 2'b00, 
+            SWITCHES[4:0], 3'b000
+            }), 
+        .Dout(LEDSTRIP));
+                      
+   //vga_fb_driver(.CLK(sclk), .WA(tempWA), .WD(tempWD), .WE(tempWE));
                            
    // Clock Divider to create 50 MHz Clock //////////////////////////////////
    always_ff @(posedge CLK) begin
-       sclk <= ~sclk;
+       s_clk <= ~s_clk;
    end
    
    // Connect Signals ///////////////////////////////////////////////////////
-   assign s_reset = BTNC;
-   
+   assign s_reset = RST;
    
    // Connect Board input peripherals (Memory Mapped IO devices) to IOBUS
    always_comb begin
@@ -77,11 +102,14 @@ module OTTER_Wrapper(
    
    
    // Connect Board output peripherals (Memory Mapped IO devices) to IOBUS
-    always_ff @ (posedge sclk) begin
+    always_ff @ (posedge s_clk) begin
         if(IOBUS_wr)
             case(IOBUS_addr)
                 LEDS_AD: LEDS   <= IOBUS_out[15:0];
                 SSEG_AD: r_SSEG <= IOBUS_out[15:0];
+//                WA: tempWA <= IOBUS_out[12:0];
+//                WD: tempWD <= IOBUS_out[7:0];
+//                WE: tempWE <= IOBUS_out[0];
             endcase
     end
    

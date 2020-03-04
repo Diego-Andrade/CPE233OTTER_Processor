@@ -37,7 +37,7 @@ initial begin
 end
 
 always_ff @ (posedge CLK) begin
-    if (RF_EN && RF_WA !== 0)
+    if (RF_EN && RF_WA != 0)
         registers[RF_WA] <= RF_WD;
 end
 

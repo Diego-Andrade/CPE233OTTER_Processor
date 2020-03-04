@@ -108,12 +108,12 @@ set_property PACKAGE_PIN W4 [get_ports {ANODES[3]}]
 
 
 ##Buttons
-set_property PACKAGE_PIN U18 [get_ports BTNC]						
-	set_property IOSTANDARD LVCMOS33 [get_ports BTNC]
+set_property PACKAGE_PIN U18 [get_ports RST]						
+	set_property IOSTANDARD LVCMOS33 [get_ports RST]
 #set_property PACKAGE_PIN T18 [get_ports btnU]						
 #	set_property IOSTANDARD LVCMOS33 [get_ports btnU]
-#set_property PACKAGE_PIN W19 [get_ports BTNL]						
-#	set_property IOSTANDARD LVCMOS33 [get_ports BTNL]
+set_property PACKAGE_PIN W19 [get_ports INTR]						
+	set_property IOSTANDARD LVCMOS33 [get_ports INTR]
 #set_property PACKAGE_PIN T17 [get_ports btnR]						
 	#set_property IOSTANDARD LVCMOS33 [get_ports btnR]
 #set_property PACKAGE_PIN U17 [get_ports btnD]						
@@ -123,8 +123,8 @@ set_property PACKAGE_PIN U18 [get_ports BTNC]
 
 ##Pmod Header JA
 ##Sch name = JA1
-#set_property PACKAGE_PIN J1 [get_ports {JA[0]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[0]}]
+set_property PACKAGE_PIN J1 [get_ports {LEDSTRIP}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {LEDSTRIP}]
 ##Sch name = JA2
 #set_property PACKAGE_PIN L2 [get_ports {JA[1]}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[1]}]
