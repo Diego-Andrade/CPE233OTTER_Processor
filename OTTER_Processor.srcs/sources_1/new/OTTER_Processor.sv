@@ -35,32 +35,37 @@ module OTTER_Processor(
           tMEM_WE2, tMEM_RDEN1, tMEM_RDEN2,     // Memory write enable 2, read enable 1 and 2
           tRF_WRITE,                            // RF enable
           tBR_EQ, tBR_LT, tBR_LTU,              // Branch cond gen
-          tALU_SRC_A;                           // ALU source A select
+          tALU_SRC_A,                           // ALU source A select
+          tINTR_TAKEN, tCSR_WRITE, tMIE;        // CSR mie
           
-    logic [1:0]  tPC_SOURCE,                    // PC source select
-                 tRF_WR_SEL,                    // RF write select
-                 tALU_SRC_B;                    // ALU source B select
+    logic [1:0] tRF_WR_SEL,                    // RF write select
+                tALU_SRC_B;                    // ALU source B select
+                
+    logic [2:0] tPC_SOURCE;                     // PC source select
     
     logic [3:0] tALU_FUN;                       // ALU function select
     
-    logic [31:0] tPC_IN, tPC,               // PC data
+    logic [31:0] tPC_IN, tPC,                   // PC data
                  tJALR, tBRANCH, tJAL,          // Branch Address Generator
                  tINSTRUCTION, tMEM_DOUT2,      // Memory data
                  tRF_WD, tRF_RS1, tRF_RS2,      // Reg file data
                  tALU_RESULT, tALU_A, tALU_B,   // ALU data, source in
-                 tCSR_REG,                      // Control Regs???
-                 tU, tI, tS, tJ, tB;            // Immed Gen data
+                 tU, tI, tS, tJ, tB,            // Immed Gen data
+                 tMEPC, tMTVEC, tCSR_RD;        // CSR data
+                 
     PC pc(
         .CLK(CLK), .PC_RST(RST), 
         .PC_WRITE(tPC_WRITE), .PC_DIN(tPC_IN), 
         .PC_COUNT(tPC));
     
-    Mux4 pc_mux(
+    Mux8 pc_mux(
         .SEL(tPC_SOURCE), 
         .ZERO(tPC + 4), 
         .ONE(tJALR), 
         .TWO(tBRANCH), 
-        .THREE(tJAL), 
+        .THREE(tJAL),
+        .FOUR(tMTVEC),
+        .FIVE(tMEPC), 
         .OUT(tPC_IN));
         
     //ProgRom prog_rom(.CLK(CLK), .ADDR(PC_COUNTER), .INSTRUCTION(INSTRUCTION));
@@ -83,8 +88,8 @@ module OTTER_Processor(
     
     Mux4 reg_mux(
         .SEL(tRF_WR_SEL),
-        .ZERO(tPC),
-        .ONE(tCSR_REG),
+        .ZERO(tPC+4),
+        .ONE(tCSR_RD),
         .TWO(tMEM_DOUT2),
         .THREE(tALU_RESULT),
         .OUT(tRF_WD));      
@@ -129,6 +134,7 @@ module OTTER_Processor(
         .OPCODE(tINSTRUCTION[6:0]), 
         .FUNC3(tINSTRUCTION[14:12]),
         .FUNC7(tINSTRUCTION[31:25]),
+        .INTR_TAKEN(tINTR_TAKEN),
         .BR_EQ(tBR_EQ),
         .BR_LT(tBR_LT),
         .BR_LTU(tBR_LTU),
@@ -141,13 +147,30 @@ module OTTER_Processor(
     CU_FSM cu_fsm(
         .CLK(CLK),
         .RST(RST),
+        .INTR(INTR && tMIE),
         .OPCODE(tINSTRUCTION[6:0]),
+        .FUNC3(tINSTRUCTION[14:12]),
         .PC_WRITE(tPC_WRITE),
         .RF_WRITE(tRF_WRITE),
         .MEM_WE2(tMEM_WE2),
         .MEM_RDEN1(tMEM_RDEN1),
-        .MEM_RDEN2(tMEM_RDEN2)
-    );
+        .MEM_RDEN2(tMEM_RDEN2),
+        .CSR_WRITE(tCSR_WRITE),
+        .INTR_TAKEN(tINTR_TAKEN));
+    
+    CSR csr(
+        .CLK(CLK),
+        .RST(RST),
+        .INTR_TAKEN(tINTR_TAKEN),
+        .PC(tPC),
+        .ADDR(tINSTRUCTION[31:20]),
+        .WD(tRF_RS1),
+        .WE(tCSR_WRITE),
+        .MIE(tMIE),
+        .MEPC(tMEPC),
+        .MTVEC(tMTVEC),
+        .RD(tCSR_RD)
+      );
     
     assign IOBUS_OUT = tRF_RS2;
     assign IOBUS_ADDR = tALU_RESULT;

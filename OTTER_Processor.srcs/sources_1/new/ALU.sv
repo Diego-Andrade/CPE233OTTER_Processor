@@ -33,9 +33,9 @@ module ALU(
             4'b0110: RESULT = A | B;                                // OR
             4'b0111: RESULT = A & B;                                // AND
             4'b0100: RESULT = A ^ B;                                // XOR
-            4'b0101: RESULT = A >> B[4:0];                          // SRL
-            4'b0001: RESULT = A << B[4:0];                          // SLL
-            4'b1101: RESULT = $signed(A) >> $signed(B[4:0]);        // SRA
+            4'b0101: RESULT = A >> $signed(B[4:0]);                 // SRL
+            4'b0001: RESULT = A << $signed(B[4:0]);                 // SLL
+            4'b1101: RESULT = $signed(A) >>> $signed(B[4:0]);        // SRA
             4'b0010:                                                // SLT
                 if ( $signed(A) < $signed(B) ) 
                     RESULT = 1;

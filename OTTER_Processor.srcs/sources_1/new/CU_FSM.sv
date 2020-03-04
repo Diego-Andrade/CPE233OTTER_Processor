@@ -24,15 +24,17 @@ module CU_FSM(
     input CLK,
     input RST, INTR,
     input [6:0] OPCODE,
+    input [2:0] FUNC3,
     output logic PC_WRITE,
     output logic RF_WRITE,
     output logic MEM_WE2,
     output logic MEM_RDEN1,
     output logic MEM_RDEN2,
-    output logic rst_out
+    output logic CSR_WRITE,
+    output logic INTR_TAKEN
     );
     
-    typedef enum {ST_FETCH, ST_EXEC, ST_WRITEBACK} State; 
+    typedef enum {ST_FETCH, ST_EXEC, ST_WRITEBACK, ST_INTR} State; 
     
     State PS = ST_FETCH, NS = ST_FETCH;
     
@@ -49,7 +51,10 @@ module CU_FSM(
         MEM_WE2 = 0;
         MEM_RDEN1 = 0;
         MEM_RDEN2 = 0;
-        rst_out = 0;
+        CSR_WRITE = 0;
+        INTR_TAKEN = 0;
+        
+        NS = ST_FETCH;
         
         case (PS)
             ST_FETCH: begin
@@ -58,11 +63,15 @@ module CU_FSM(
             end
             
             ST_EXEC: begin
+                // Defaults for most commands, if not then explicitly set below
                 RF_WRITE = 1;
                 PC_WRITE = 1;
                 
-                NS = ST_FETCH;
-                
+                if (INTR)
+                    NS = ST_INTR;
+                else
+                    NS = ST_FETCH;
+                                    
                 case(OPCODE)
                    7'b0000011: begin       // Handle L's
                         MEM_RDEN2 = 1;     
@@ -82,6 +91,15 @@ module CU_FSM(
                     7'b1100011: begin       // Handle branches, no rf writting required
                         RF_WRITE = 0;                      
                     end 
+                    
+                    7'b1110011: begin       
+                        if (FUNC3 == 3'b001)    // Handle CSRRW
+                            CSR_WRITE = 1;  
+                    end
+                    
+                    default: begin 
+                        // Blank in order to gen comb logic
+                    end
                 endcase
             end
             
@@ -89,7 +107,21 @@ module CU_FSM(
                 RF_WRITE = 1;
                 PC_WRITE = 1;
                 
+                if (INTR)
+                    NS = ST_INTR;
+                else
+                    NS = ST_FETCH;
+            end
+            
+            ST_INTR: begin
+                INTR_TAKEN = 1;
+                PC_WRITE = 1;
+                
                 NS = ST_FETCH;
+            end
+            
+            default: begin 
+                
             end
         endcase
     end
