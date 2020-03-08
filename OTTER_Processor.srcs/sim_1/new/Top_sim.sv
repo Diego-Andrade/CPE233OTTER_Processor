@@ -24,7 +24,7 @@ module Top_sim();
     
     logic CLK;
     //input BTNL,
-    logic BTNC;
+    logic RST;
     logic [15:0] SWITCHES;
     logic [15:0] LEDS;
     logic [7:0] CATHODES;
@@ -33,7 +33,7 @@ module Top_sim();
     
     OTTER_Wrapper wp(
             .CLK(CLK), 
-            .BTNC(BTNC), 
+            .RST(RST), 
             .SWITCHES(SWITCHES),
             .LEDS(LEDS),
             .CATHODES(CATHODES),
@@ -46,8 +46,8 @@ module Top_sim();
     end
     
     initial begin
-        SWITCHES = 0;
-        BTNC = 0;
+        SWITCHES = 2;
+        RST = 0;
 //        BTNC = 1; #50;
 //        BTNC = 0; #5;
     

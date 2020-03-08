@@ -46,8 +46,8 @@ module CSR(
             csr[ADDR] <= WD; 
         end
         else if (INTR_TAKEN) begin
-            csr[12'h341] <= 0; //MIE
-            csr[12'h341] <= PC;
+            csr[12'h305] <= 0;      // MIE
+            csr[12'h341] <= PC;     // MEPC
         end
     end
     

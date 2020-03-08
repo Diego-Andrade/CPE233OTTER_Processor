@@ -123,8 +123,8 @@ set_property PACKAGE_PIN W19 [get_ports INTR]
 
 ##Pmod Header JA
 ##Sch name = JA1
-set_property PACKAGE_PIN J1 [get_ports {LEDSTRIP}]					
-	set_property IOSTANDARD LVCMOS33 [get_ports {LEDSTRIP}]
+set_property PACKAGE_PIN J1 [get_ports LEDSTRIP ]					
+	set_property IOSTANDARD LVCMOS33 [get_ports LEDSTRIP ]
 ##Sch name = JA2
 #set_property PACKAGE_PIN L2 [get_ports {JA[1]}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[1]}]

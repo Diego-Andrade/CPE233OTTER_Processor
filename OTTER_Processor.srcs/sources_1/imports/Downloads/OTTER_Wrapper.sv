@@ -23,21 +23,17 @@ module OTTER_Wrapper(
    output [3:0] ANODES,
    output logic LEDSTRIP
    );
-       
+     
     // INPUT PORT IDS ///////////////////////////////////////////////////////
     // Right now, the only possible inputs are the switches
     // In future labs you can add more MMIO, and you'll have
     // to add constants here for the mux below
     localparam SWITCHES_AD = 32'h11000000;
-           
+        
     // OUTPUT PORT IDS //////////////////////////////////////////////////////
     // In future labs you can add more MMIO
     localparam LEDS_AD    = 32'h11080000;
     localparam SSEG_AD    = 32'h110C0000;
-    
-//    localparam WA    = 32'h11010000;
-//    localparam WD    = 32'h11020000;
-//    localparam WE    = 32'h11030000;
             
     
    // Signals for connecting OTTER_MCU to OTTER_wrapper /////////////////////
@@ -74,7 +70,7 @@ module OTTER_Wrapper(
         .BTN(INTR),
         .DB_BTN(s_intr));
    
-    WS2813_Driver leds(.CLK(CLK), 
+    WS2813_Driver blade1(.CLK(CLK), 
         .Din({
             SWITCHES[15:11], 3'b000, 
             SWITCHES[10:5], 2'b00, 
@@ -82,8 +78,6 @@ module OTTER_Wrapper(
             }), 
         .Dout(LEDSTRIP));
                       
-   //vga_fb_driver(.CLK(sclk), .WA(tempWA), .WD(tempWD), .WE(tempWE));
-                           
    // Clock Divider to create 50 MHz Clock //////////////////////////////////
    always_ff @(posedge CLK) begin
        s_clk <= ~s_clk;
@@ -100,16 +94,13 @@ module OTTER_Wrapper(
         endcase
     end
    
-   
+  
    // Connect Board output peripherals (Memory Mapped IO devices) to IOBUS
     always_ff @ (posedge s_clk) begin
         if(IOBUS_wr)
             case(IOBUS_addr)
                 LEDS_AD: LEDS   <= IOBUS_out[15:0];
                 SSEG_AD: r_SSEG <= IOBUS_out[15:0];
-//                WA: tempWA <= IOBUS_out[12:0];
-//                WD: tempWD <= IOBUS_out[7:0];
-//                WE: tempWE <= IOBUS_out[0];
             endcase
     end
    
