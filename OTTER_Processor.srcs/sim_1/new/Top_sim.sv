@@ -23,7 +23,7 @@
 module Top_sim();
     
     logic CLK;
-    //input BTNL,
+    logic INTR;
     logic RST;
     logic [15:0] SWITCHES;
     logic [15:0] LEDS;
@@ -34,6 +34,7 @@ module Top_sim();
     OTTER_Wrapper wp(
             .CLK(CLK), 
             .RST(RST), 
+            .INTR(INTR),
             .SWITCHES(SWITCHES),
             .LEDS(LEDS),
             .CATHODES(CATHODES),
@@ -46,8 +47,16 @@ module Top_sim();
     end
     
     initial begin
-        SWITCHES = 2;
+        SWITCHES = 6;
         RST = 0;
+        INTR = 0;
+        
+        // Trigger interrupt6
+        #300
+        INTR = 1;
+        #140
+        INTR = 0;
+        
 //        BTNC = 1; #50;
 //        BTNC = 0; #5;
     

@@ -34,21 +34,28 @@ module OTTER_Wrapper(
     // In future labs you can add more MMIO
     localparam LEDS_AD    = 32'h11080000;
     localparam SSEG_AD    = 32'h110C0000;
+    
+    localparam LED1_AD    = 32'h11100000;
+    localparam LED2_AD    = 32'h11140000;
+    localparam LED3_AD    = 32'h11180000;
+    localparam LED4_AD    = 32'h111C0000;
+    localparam LED5_AD    = 32'h11200000;
+    localparam LED6_AD    = 32'h11240000;
+    localparam LED7_AD    = 32'h11280000;
+    localparam LED8_AD    = 32'h112C0000;
             
     
    // Signals for connecting OTTER_MCU to OTTER_wrapper /////////////////////
-   logic s_reset, s_load, s_intr;
+   logic s_reset, s_intr;
    logic s_clk = 0;
    
    // Peripheral data signals //////////////////////////////////////////////  
-   logic [15:0]  r_SSEG;
+   logic [15:0]  r_SSEG;  
+   
+   logic [23:0] LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8;
      
    logic [31:0] IOBUS_out,IOBUS_in,IOBUS_addr;
    logic IOBUS_wr;
-    
-//   logic [12:0] tempWA;
-//   logic [7:0] tempWD;
-//   logic tempWE;
     
    // Declare OTTER_CPU ////////////////////////////////////////////////////
     OTTER_Processor MCU (
@@ -71,11 +78,8 @@ module OTTER_Wrapper(
         .DB_BTN(s_intr));
    
     WS2813_Driver blade1(.CLK(CLK), 
-        .Din({
-            SWITCHES[15:11], 3'b000, 
-            SWITCHES[10:5], 2'b00, 
-            SWITCHES[4:0], 3'b000
-            }), 
+        .LED1(LED1), .LED2(LED2), .LED3(LED3), .LED4(LED4), 
+        .LED5(LED5), .LED6(LED6), .LED7(LED7), .LED8(LED8),   
         .Dout(LEDSTRIP));
                       
    // Clock Divider to create 50 MHz Clock //////////////////////////////////
@@ -101,6 +105,15 @@ module OTTER_Wrapper(
             case(IOBUS_addr)
                 LEDS_AD: LEDS   <= IOBUS_out[15:0];
                 SSEG_AD: r_SSEG <= IOBUS_out[15:0];
+                
+                LED1_AD: LED1   <= IOBUS_out[23:0];
+                LED2_AD: LED2   <= IOBUS_out[23:0];
+                LED3_AD: LED3   <= IOBUS_out[23:0];
+                LED4_AD: LED4   <= IOBUS_out[23:0];
+                LED5_AD: LED5   <= IOBUS_out[23:0];
+                LED6_AD: LED6   <= IOBUS_out[23:0];
+                LED7_AD: LED7   <= IOBUS_out[23:0];
+                LED8_AD: LED8   <= IOBUS_out[23:0];
             endcase
     end
    

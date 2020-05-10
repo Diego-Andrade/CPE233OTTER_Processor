@@ -22,7 +22,7 @@
 
 module WS2813_Driver(
     input CLK,
-    input [0:23] Din,
+    input [23:0] LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8,
     output logic Dout
     );
     
@@ -32,25 +32,35 @@ module WS2813_Driver(
     
     State PS, NS;
     
-    // 10n per clk
+    // Timing variables. 10n per clk
     const logic [15:0] T1H_CLOCKS = 80; // 800 ns = 40 clks
     const logic [15:0] T1L_CLOCKS = 45; // 450 ns = 23 clks 
     const logic [15:0] T0H_CLOCKS = 35; // 340 ns = 17 clks 
     const logic [15:0] T0L_CLOCKS = 90; // 900 ns = 45 clks 
     const logic [15:0] HOLD_CLOCKS = 30000; // 300 us = 15000 clks
     
-   
-    const logic [4:0] MESSAGE_SIZE = 5'h17;     // = 24 * num_leds - 1
+    const logic [7:0] MESSAGE_SIZE = 191;       // End of message = 24 * num_leds - 1
+  
+    // Message to send
+    logic [0:191] message = { 
+        {LED1[15:8], LED1[23:16], LED1[7:0]}, 
+        {LED2[15:8], LED2[23:16], LED2[7:0]}, 
+        {LED3[15:8], LED3[23:16], LED3[7:0]}, 
+        {LED4[15:8], LED4[23:16], LED4[7:0]}, 
+        {LED5[15:8], LED5[23:16], LED5[7:0]}, 
+        {LED6[15:8], LED6[23:16], LED6[7:0]}, 
+        {LED7[15:8], LED7[23:16], LED7[7:0]}, 
+        {LED8[15:8], LED8[23:16], LED8[7:0]}     
+    };  
                         
-    logic [15:0] clk_count = 0;
+    logic [15:0] clk_count = 0;                
     logic count_rst;
     
-    logic [4:0] curr_bit = 0;
+    logic [7:0] curr_bit = 0;                   // Current bit being sent out
     logic curr_bit_rst, curr_bit_increase; 
     
-    // Temp debugging
-    logic done = 0;
-    
+    logic done = 0;                             // Signal to spot sending data, proably should be
+                                                // implemented like VGA output data
     
     // Counter block to count the number of clock pulses when enabled  /////////
     // Triggered every 20 ns
@@ -85,7 +95,7 @@ module WS2813_Driver(
                     count_rst = 1'b1;
                     curr_bit_rst = 1'b1;                // Reset to begin of message
                     
-                    if (Din[0] == 1'b1)                 // Start sending '1' or '0' of beginning message
+                    if (message[0] == 1'b1)                 // Start sending '1' or '0' of beginning message
                         NS = ST_T1H;
                     else
                         NS = ST_T0H;
@@ -116,7 +126,7 @@ module WS2813_Driver(
                         NS = ST_HOLD;
                         //done = 1;                           // TEMP
                     end
-                    else if (Din[curr_bit + 1] == 1'b1)
+                    else if (message[curr_bit + 1] == 1'b1)
                         NS = ST_T1H;
                     else 
                         NS = ST_T0H;
@@ -146,7 +156,7 @@ module WS2813_Driver(
                         NS = ST_HOLD;
 //                        done = 1;                       // TEMP
                     end
-                    else if (Din[curr_bit + 1] == 1'b1)
+                    else if (message[curr_bit + 1] == 1'b1)
                         NS = ST_T1H;
                     else 
                         NS = ST_T0H;

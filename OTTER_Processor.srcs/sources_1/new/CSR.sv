@@ -38,15 +38,15 @@ module CSR(
     
     always_ff @ (posedge CLK) begin
         if (RST) begin
-            csr[12'h304] <= 0;       
-            csr[12'h341] <= 0;         
-            csr[12'h305] <= 0;
+            csr[12'h304] <= 0;      // MIE   
+            csr[12'h341] <= 0;      // MEPC
+            csr[12'h305] <= 0;      // MTVEC
         end
         else if (WE) begin 
             csr[ADDR] <= WD; 
         end
         else if (INTR_TAKEN) begin
-            csr[12'h305] <= 0;      // MIE
+            csr[12'h304] <= 0;      // MIE
             csr[12'h341] <= PC;     // MEPC
         end
     end

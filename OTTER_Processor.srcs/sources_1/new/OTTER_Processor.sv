@@ -147,7 +147,7 @@ module OTTER_Processor(
     CU_FSM cu_fsm(
         .CLK(CLK),
         .RST(RST),
-        .INTR(INTR && tMIE),
+        .INTR(INTR & tMIE),
         .OPCODE(tINSTRUCTION[6:0]),
         .FUNC3(tINSTRUCTION[14:12]),
         .PC_WRITE(tPC_WRITE),
